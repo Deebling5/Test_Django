@@ -1,8 +1,8 @@
 from flask import Flask, render_template
-from flask_ngrok import run_with_ngrok
-
+from helium import *
+from selenium import webdriver
 app = Flask(__name__)
-run_with_ngrok(app)
+
 
 @app.route("/")
 def home():
@@ -14,7 +14,16 @@ def about():
     return render_template("about.html")
 
 
+@app.route("/moogsoft")
+def moogsoft():
+    moogsoft.driver = start_chrome()
+
+
+@app.route("/google")
+def google():
+    moogsoft.driver.execute_script("window.open('');")
+    go_to('www.google.com')
+    click("I'm Feeling Lucky")
+
 if __name__ == "__main__":
-    app.run(host='0.0.0.0')
-
-
+    app.run(debug=True)
